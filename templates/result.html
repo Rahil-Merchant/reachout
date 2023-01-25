@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="assets\css\model.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <div id="brandname">
+                Depression Text Classifier
+            </div>
+            <h2>Detect suicidal or depressive comments in a post.</h2>
+
+        </div>
+    </header>
+    <p style="color:blue;font-size:20;text-align: center;"><b>Results:</b></p>
+    <div class="results">
+
+    <!--<h2 style="color:red;">prediction</h2>-->
+
+    {% if prediction > 0.7%}
+    <h2 style="color:red;">Depressive Text Detected</h2>
+    {% endif %}
+    {% if prediction < 0.7%}
+    <h2 style="color:green;">No Depressive Text Detected</h2>
+    {% endif %}
+
+
+    </div>
+
+</body>
+
+</html>

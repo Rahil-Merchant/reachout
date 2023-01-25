@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home</title>
+    <!-- <link rel="stylesheet" type="text/css" href="../static/css/styles.css"> -->
+    <link rel="stylesheet" type="text/css" href="assets\css\style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <div id="brandname">
+                Depression Text Classifier
+            </div>
+            <h2>Detect suicidal or depressive comments in a post.</h2>
+
+        </div>
+    </header>
+
+    <div class="ml-container">
+
+        <form action="{{ url_for('predict')}}" method="POST">
+            <p>Enter Your Text Here</p>
+            <!-- <input type="text" name="comment"/> -->
+            <textarea name="message" rows="4" cols="50"></textarea>
+            <br />
+
+            <input type="submit" class="btn-info" value="predict">
+
+        </form>
+
+    </div>
+
+
+
+
+</body>
+
+</html>

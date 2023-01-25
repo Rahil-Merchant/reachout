@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Reachout</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/venobox/venobox.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet">
+
+    <!-- =======================================================
+  * Template Name: Presento - v1.0.0
+  * Template URL: https://bootstrapmade.com/presento-bootstrap-corporate-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-xl-10 d-flex align-items-center">
+                    <h1 class="logo mr-auto"><a href="index.html">Reachout<span>.</span></a></h1>
+                    <!-- Uncomment below if you prefer to use an image logo -->
+                    <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt=""></a>-->
+
+                    <nav class="nav-menu d-none d-lg-block">
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="index.html#about">About</a></li>
+                            <li><a href="index.html#team">Team</a></li>
+                            <li><a href="index.html#contact">Contact</a></li>
+                            <li><a href="inner-page1.html">Visualizations</a></li>
+                            <li class="active"><a href="model.html">Model</a></li>
+                            <li><a href="art.html">Art</a></li>
+                        </ul>
+                    </nav><!-- .nav-menu -->
+                </div>
+            </div>
+
+        </div>
+    </header><!-- End Header -->
+
+    <main id="main">
+
+        <!-- ======= Breadcrumbs ======= -->
+        <section class="breadcrumbs">
+            <div class="container">
+
+                <ol>
+                    <li><a href="model.html">Model</a></li>
+                    <li>Reddit Profile Analyser</li>
+                </ol>
+                <h2 class="text-center">Reddit Profile Analyser</h2><br>
+
+               
+
+
+
+
+
+            </div>
+        </section><!-- End Breadcrumbs -->
+
+        <div class="p-5 text-center bg-light">
+            <h3>For user : {{display_data["user"]}}</h3>
+            <div id="results">
+                <!-- {{display_data}} -->
+
+                <h4>Average Polarity Score = {{"{:.2%}".format(display_data["avg_score"])}}</h4>
+                <div class="progress">
+                    <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{"
+                        {:.2%}".format(display_data["avg_score"])}}" aria-valuenow="{{"
+                        {:.4}".format(display_data["avg_score"]*100)}}" aria-valuemin="0" aria-valuemax="100">
+                        {{"{:.2%}".format(display_data["avg_score"])}}</div>
+                </div>
+                <br>
+                <h4>Post with highest Polarity Score  (Polarity Score = {{"{:.2%}".format(display_data["max_score"])}}):</h4>
+                <blockquote class="blockquote">
+                    <p class="mb-0">"{{display_data["max_post"]}}"</p>
+                </blockquote>
+                <div class="progress">
+                    <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{"
+                        {:.2%}".format(display_data["max_score"])}}" aria-valuenow="{{"
+                        {:.4}".format(display_data["max_score"]*100)}}" aria-valuemin="0" aria-valuemax="100">
+                        {{"{:.2%}".format(display_data["max_score"])}}</div>
+                </div>
+                <br>
+
+                <br>
+
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Post</th>
+                        <th>Confidence</th>
+                    </tr>
+                    {% for k, v in display_data["results"].items() %}
+                    <tr>
+                        <td>{{ k }}</td>
+                        <td>{{ "{:.2%}".format(v) }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+
+
+
+    </main><!-- End #main -->
+
+
+    <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+    <script src="assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+    <script src="assets/vendor/counterup/counterup.min.js"></script>
+    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="assets/vendor/venobox/venobox.min.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
+
+    <script type="text/javascript">
+        (function (d, m) {
+            var kommunicateSettings =
+                { "appId": "2b4d5160f143d3536c10650bc6ba91aef", "popupWidget": true, "automaticChatOpenOnNavigation": true };
+            var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+            s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+            var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+            window.kommunicate = m; m._globals = kommunicateSettings;
+        })(document, window.kommunicate || {});
+/* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+    </script>
+
+</body>
+
+</html>
