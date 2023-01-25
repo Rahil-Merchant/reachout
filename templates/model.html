@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <title>Home</title>
     <!-- <link rel="stylesheet" type="text/css" href="../static/css/styles.css"> -->
     <link rel="stylesheet" type="text/css" href="assets\css\style.css">
@@ -19,7 +21,9 @@
         </div>
     </header>
 
-    <div class="ml-container">
+    <button id="choice1" onclick=showSingleText()>Enter a single text</button>
+    <button id="choice2" onclick=showReddit()>Analyse a reddit user</button>
+    <div class="ml-container" id="single_text_container" style="display:none;">
 
         <form action="{{ url_for('predict')}}" method="POST">
             <p>Enter Your Text Here</p>
@@ -27,11 +31,74 @@
             <textarea name="message" rows="4" cols="50"></textarea>
             <br />
 
-            <input type="submit" class="btn-info" value="predict">
+            <input type="submit" class="btn-info" value="Predict">
 
         </form>
 
     </div>
+
+    <div class="ml-container" id="reddit_container" style="display:none;">
+
+        <form action="{{ url_for('reddit_analyser')}}" method="POST">
+        <p>Enter A Username Here</p>
+        <input type="text" name="max_posts" id="max_posts" style="display: none;" value=20>
+        <input type="text" name="id" id='id' />
+        <!-- <textarea name="message" rows="4" cols="50"></textarea> -->
+        <br />
+
+        <input type="submit" class="btn-info" value="Analyse" id="sendpost">
+
+        </form>
+
+    </div>
+
+    <script>
+        document.getElementById("choice1").addEventListener("click", showSingleText, false);
+
+        function showSingleText() {
+            document.getElementById("single_text_container").style.display = "block";
+            document.getElementById("reddit_container").style.display = "none";
+
+        }
+
+        document.getElementById("choice2").addEventListener("click", showReddit, false);
+
+        function showReddit() {
+            document.getElementById("single_text_container").style.display = "none";
+            document.getElementById("reddit_container").style.display = "block";
+
+        }
+
+        document.getElementById("sendpost").addEventListener("click", sendpost, false);
+
+        function sendpost() {
+            var reddit = document.getElementById("id").value;
+            var result = {
+                "result": {
+                    "id": reddit,
+                    "max_posts": 20
+
+                }
+
+            }
+            $.ajax({
+                data: JSON.stringify(result),
+                type: "POST",
+                contentType: "application/json",
+                url: "/reddit_analyser"
+            }).done(function (data) {
+                if (data.status == "Failed") {
+                    alert(data.msg)
+                }
+                else if (data.status == "Success") {
+                    console.log(data.result)
+                }
+            });
+            
+        }
+
+
+    </script>
 
 
 

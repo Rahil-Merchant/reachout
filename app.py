@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_from_directory, request
+from flask import Flask, render_template, send_from_directory, request, jsonify, redirect, url_for
 from tensorflow import keras
 from tensorflow.keras.layers import Dense, Input, Dropout
 from tensorflow.keras.models import Model
@@ -19,6 +19,10 @@ import string
 import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords
+import json
+import praw
+from prawcore import PrawcoreException
+import traceback
 #import contractions
 #from nltk.stem import PorterStemmer
 #stemming = PorterStemmer()
@@ -878,7 +882,7 @@ def clean(text):
 #     print('rem puncs',text)
     
     # remove stopwords
-    text = rem_stops(text)
+    #text = rem_stops(text)
 #     print('rem stops',text)
     
     # remove multiple white spaces
@@ -991,6 +995,65 @@ def predict():
         print(score)
     return render_template('result.html',prediction = score)
 
+@app.route('/reddit_analyser',methods=['POST'])
+def reddit_analyser():
 
+    if request.method == 'POST':
+        # result=request.json['result']
+        # if("id" not in result and "max_posts" not in result):
+        #     return jsonify({"status": "Failed","msg":"Bad Request"})
+        # user_id=result['id']
+        # max_posts=result['max_posts']
+        # print(result)
+        user_id = request.form.to_dict(flat=False).get("id")[0]
+        max_posts = int(request.form.to_dict(flat=False).get("max_posts")[0])
+        
+        print(user_id, max_posts,request,request.form,request.form.to_dict(flat=False),sep="\n")
+
+
+        url = r'https://www.reddit.com/'
+        posts={}
+        with open("credentials.json") as f:
+            params = json.load(f)
+        try:
+            reddit = praw.Reddit(client_id=params['client_id'], 
+                                client_secret=params['api_key'],
+                                password=params['password'], 
+                                user_agent='rahil accessAPI:v0.0.1 (by /u/MurkyMercMerc)',
+                                username=params['username'])
+            print(reddit)
+        except:
+            return jsonify({"status": "Failed","msg":"Could Not Connect to Reddit"})
+        try:
+            a=[]
+            user = reddit.redditor(user_id)
+            print(user)
+            
+            for submission in user.submissions.new(limit=max_posts):
+                # change below fn to cleaning function
+                #print(submission.title+". "+submission.selftext)
+                cleaned_text=[]
+                sub=submission.title.replace("[removed]","")+" "+submission.selftext.replace("[removed]","")
+                sub=clean(sub)
+                cleaned_text.append(sub)
+                cleaned_text_1=bert_encode(cleaned_text,tokenizer,max_len=512)
+                posts[sub]=float(model.predict(cleaned_text_1)[0][0])
+            print(posts)
+            print(sum(posts.values()) / len(posts))
+            #return render_template("reddit_profile_analyzer.html",display_data=jsonify({"status":"Success","avg_score":np.mean(list(posts.values())),'max_score':{max(posts,key=posts.get):max(posts.values())},"results":posts}))
+            #print(({"status":"Success","result":{"avg_score":str(sum(posts.values()) / len(posts)),'max_score':str({max(posts,key=posts.get):max(posts.values()))},"results":posts}}))
+            avg_score = sum(posts.values()) / len(posts)
+            max_score = {max(posts,key=posts.get):max(posts.values())}
+            #return jsonify({"status":"Success","result":{"avg_score":avg_score,'max_score':max_score,"results":posts}})
+            #display_data=jsonify({"status":"Success","result":{"avg_score":avg_score,'max_score':max_score,"results":posts}})
+            #return redirect(url_for("reddit_profile_result"), variable=display_data)
+
+        except Exception as e:
+            print(traceback.format_exc())
+            print(e)
+            print("Invalid Username")
+            return jsonify({"status": "Failed","msg":"Invalid Username"})
+        return render_template("reddit_profile_result.html",display_data=json.dumps({"status":"Success","result":{"avg_score":avg_score,'max_score':max_score,"results":posts}}))
+        
 
 app.run(debug=True)
